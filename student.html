@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks System</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .table-section {
+            width: 60%;
+        }
+        .controls-section {
+            width: 35%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .buttons-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+        /* active blue style */
+        button.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Student Marks System</h1>
+
+    <div class="container">
+        <div class="table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Divya</td><td>98</td></tr>
+                    <tr><td>Karan</td><td>95</td></tr>
+                    <tr><td>Priya</td><td>92</td></tr>
+                    <tr><td>Sneha</td><td>88</td></tr>
+                    <tr><td>Amit</td><td>85</td></tr>
+                    <tr><td>Rahul</td><td>76</td></tr>
+                </tbody>
+            </table>
+            <input type="text" id="searchInput" placeholder="Click controls to interact with the data.">
+            <p>Sorted student by marks (Highest - lowest).</p>
+        </div>
+
+        <div class="controls-section">
+            <div class="buttons-group">
+                <button onclick="toggleBlue(this)">Show Highest</button>
+                <button onclick="toggleBlue(this)">Show Average</button>
+            </div>
+            <div class="buttons-group">
+                <button onclick="toggleBlue(this)">Sort by Marks</button>
+                <button onclick="toggleBlue(this)">Reset Sample</button>
+            </div>
+            <button onclick="toggleBlue(this)">Remove Last</button>
+
+            <hr>
+
+            <h3>Controls</h3>
+            <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label for="marks">Marks</label>
+                <input type="text" id="marks" placeholder="Enter marks">
+            </div>
+            <button onclick="toggleBlue(this)">Add Student</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleBlue(btn) {
+            
+            document.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+          
+            btn.classList.add("active");
+        }
+    </script>
+
+</body>
+</html>
