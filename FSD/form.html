@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f5e8;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #e8f5e8;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: normal;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .content {
+            display: flex;
+            gap: 50px;
+        }
+
+        .left-section {
+            flex: 1;
+        }
+
+        .right-section {
+            width: 200px;
+        }
+
+        .student-table {
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #999;
+            margin-bottom: 10px;
+        }
+
+        .header-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .header-marks {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .student-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            color: #333;
+        }
+
+        .student-name {
+            font-size: 14px;
+        }
+
+        .student-marks {
+            font-size: 14px;
+        }
+
+        .total-text {
+            margin-top: 20px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .button-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .form-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        input[type="text"], 
+        input[type="number"] {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        input[type="text"]:focus, 
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .info-display {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .right-section {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Marks System</h1>
+        <p class="subtitle">A simple web-based application to manage student marks, calculate averages, and sort data.</p>
+        
+        <div class="content">
+            <div class="left-section">
+                <div class="student-table">
+                    <div class="table-header">
+                        <span class="header-name">Name</span>
+                        <span class="header-marks">Marks</span>
+                    </div>
+                    <div id="studentList">
+                        <!-- Students will be displayed here -->
+                    </div>
+                </div>
+                
+                <p class="total-text">School students by marks (highest to lowest).</p>
+            </div>
+            
+            <div class="right-section">
+                <div class="button-panel">
+                    <button onclick="showHighest()">Show Highest</button>
+                    <button onclick="showAverage()">Show Average</button>
+                    <button onclick="sortByMarks()">Sort by Marks</button>
+                    <button onclick="resetSample()">Reset Sample</button>
+                    <button onclick="removeLast()">Remove Last</button>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="studentName">Name:</label>
+                        <input type="text" id="studentName" placeholder="Enter name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="studentMarks">Marks:</label>
+                        <input type="number" id="studentMarks" placeholder="Enter marks" min="0" max="100">
+                    </div>
+                    
+                    <button onclick="addStudent()" style="margin-top: 10px;">Add Student</button>
+                </div>
+                
+                <div id="infoDisplay" class="info-display" style="display: none;">
+                    <div class="info-text" id="infoText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let students = [
+            { name: "Divya", marks: 98 },
+            { name: "Karan", marks: 95 },
+            { name: "Priya", marks: 92 },
+            { name: "Sneha", marks: 88 },
+            { name: "Amit", marks: 85 },
+            { name: "Kajal", marks: 78 }
+        ];
+        
+        let originalStudents = [...students]; 
+
+        function displayStudents() {
+            const studentList = document.getElementById('studentList');
+            studentList.innerHTML = '';
+            
+            students.forEach((student, index) => {
+                const div = document.createElement('div');
+                div.className = 'student-row';
+                
+                div.innerHTML = `
+                    <span class="student-name">${student.name}</span>
+                    <span class="student-marks">${student.marks}</span>
+                `;
+                
+                studentList.appendChild(div);
+            });
+        }
+
+        function showHighest() {
+            if (students.length === 0) {
+                showInfo("No students available");
+                return;
+            }
+            
+            const highest = Math.max(...students.map(s => s.marks));
+            const topStudents = students.filter(s => s.marks === highest);
+            const names = topStudents.map(s => s.name).join(', ');
+            
+            showInfo(`Highest Marks: ${highest}<br>Student(s): ${names}`);
+        }
+
+        function showAverage() {
+            if (students.length === 0) {
+                showInfo("No students available");
+                return;
+            }
+            
+            const average = (students.reduce((sum, s) => sum + s.marks, 0) / students.length).toFixed(1);
+            showInfo(`Average Marks: ${average}`);
+        }
+
+        function sortByMarks() {
+            students.sort((a, b) => b.marks - a.marks);
+            displayStudents();
+            showInfo("Students sorted by marks (highest to lowest)");
+        }
+
+        function resetSample() {
+            students = [...originalStudents];
+            displayStudents();
+            hideInfo();
+            showInfo("Sample data reset successfully");
+        }
+
+        function removeLast() {
+            if (students.length === 0) {
+                showInfo("No students to remove");
+                return;
+            }
+            
+            const removed = students.pop();
+            displayStudents();
+            showInfo(`Removed: ${removed.name} (${removed.marks} marks)`);
+        }
+
+        function addStudent() {
+            const nameInput = document.getElementById('studentName');
+            const marksInput = document.getElementById('studentMarks');
+            
+            const name = nameInput.value.trim();
+            const marks = parseInt(marksInput.value);
+            
+            if (!name) {
+                showInfo("Please enter a student name");
+                return;
+            }
+            
+            if (isNaN(marks) || marks < 0 || marks > 100) {
+                showInfo("Please enter valid marks (0-100)");
+                return;
+            }
+            
+            students.push({ name, marks });
+            displayStudents();
+            
+  
+            nameInput.value = '';
+            marksInput.value = '';
+            
+            showInfo(`Added: ${name} (${marks} marks)`);
+        }
+
+        function showInfo(message) {
+            const infoDisplay = document.getElementById('infoDisplay');
+            const infoText = document.getElementById('infoText');
+            
+            infoText.innerHTML = message;
+            infoDisplay.style.display = 'block';
+            
+      
+            setTimeout(() => {
+                hideInfo();
+            }, 3000);
+        }
+
+        function hideInfo() {
+            const infoDisplay = document.getElementById('infoDisplay');
+            infoDisplay.style.display = 'none';
+        }
+
+       
+        displayStudents();
+    </script>
+</body>
+</html>
